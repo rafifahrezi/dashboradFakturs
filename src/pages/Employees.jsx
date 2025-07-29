@@ -21,10 +21,10 @@ const Employees = () => {
 
   // Fetch invoices from Firestore
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, 'faktur'), (snapshot) => {
-      setInvoices(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
-    });
-    return () => unsubscribe();
+    const unsubscribe = onSnapshot(collection(db, 'faktur'), (snapshot) =>
+      setInvoices(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+    );
+    return unsubscribe;
   }, []);
 
   // Fetch employees from Firestore
@@ -86,14 +86,12 @@ const Employees = () => {
 
     try {
       // Cek apakah karyawan sudah ada berdasarkan nama dan jabatan
-      const existingEmployee = employees.find((emp) => {
-        return (
-          emp.nama_karyawan.toLowerCase().trim() ===
-          formData.nama_karyawan.toLowerCase().trim()
-          && emp.jabatan.toLowerCase().trim() ===
-          formData.jabatan.toLowerCase().trim()
-        );
-      });
+      const existingEmployee = employees.find((emp) =>
+        emp.nama_karyawan.toLowerCase().trim()
+        === formData.nama_karyawan.toLowerCase().trim()
+        && emp.jabatan.toLowerCase().trim()
+        === formData.jabatan.toLowerCase().trim()
+      );
 
       // Jika belum ada, tambahkan karyawan baru
       if (!existingEmployee) {
@@ -132,8 +130,7 @@ const Employees = () => {
         jatuh_tempo_pergantian: '',
       });
     } catch (error) {
-      alert('❌ Gagal menambahkan data karyawan atau faktur');
-      console.error(error);
+      // console.error('Error submitting form:', error);
     }
   };
 

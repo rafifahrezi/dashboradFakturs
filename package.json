@@ -1,8 +1,9 @@
 {
-  "name": "project_syncfusion_dashboard",
+  "name": "dashboard-lia",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/firestore": "^4.9.0",
     "@syncfusion/ej2": "^19.4.48",
     "@syncfusion/ej2-react-calendars": "^19.4.56",
     "@syncfusion/ej2-react-charts": "^19.4.50",
@@ -50,11 +51,13 @@
     "autoprefixer": "^10.4.2",
     "eslint": "^8.9.0",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "postcss": "^8.4.6",
+    "prettier": "^3.6.2",
     "tailwindcss": "^3.0.19"
   }
 }

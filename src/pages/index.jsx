@@ -5,7 +5,6 @@ export { default as Employees } from './Employees';
 export { default as Editor } from './Editor';
 export { default as Fakturs } from './Fakturs';
 
-
 export { default as ColorPicker } from './ColorPicker';
 export { default as Calendar } from './Calendar';
 export { default as Area } from './Charts/Area';
@@ -16,4 +15,3 @@ export { default as Line } from './Charts/Line';
 export { default as Pie } from './Charts/Pie';
 export { default as Pyramid } from './Charts/Pyramid';
 export { default as Stacked } from './Charts/Stacked';
-
