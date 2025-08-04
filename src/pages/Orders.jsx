@@ -15,7 +15,7 @@ const Orders = () => {
         const invoiceData = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         setInvoices(invoiceData);
       } catch (error) {
-        error('Error fetching invoices from faktur:', error);
+        <p>No data Faktur</p>
       }
     };
 
@@ -42,22 +42,31 @@ const Orders = () => {
   const outletList = Object.values(groupedByOutlet);
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl shadow-lg">
       <Header category="App" title="Manajemen Customer" />
 
       {/* Daftar Faktur */}
       <div className="mb-8">
-        <h3 className="text-lg font-bold mb-4">Daftar Data Customer</h3>
+        <h3 className="text-2xl font-bold mb-6 text-gray-800">Daftar Data Customer</h3>
         {outletList.length > 0 ? (
-          outletList.map((outlet, index) => (
-            <div key={index} className="mb-6 border rounded-lg p-4">
-              <h4 className="text-xl font-semibold">{outlet.nama_outlet}</h4>
-              <p className="text-gray-600">Sales: {outlet.nama_karyawan}</p>
-              <p className="text-sm text-gray-500">Jumlah Faktur: {outlet.jumlah_faktur}</p>
-            </div>
-          ))
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {outletList.map((outlet, index) => (
+              <div
+                key={index}
+                className="border rounded-lg p-6 hover:shadow-md transition-shadow duration-200 bg-gradient-to-br from-white to-gray-50"
+              >
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">{outlet.nama_outlet}</h4>
+                <p className="text-gray-600 mb-1">
+                  <span className="font-medium">Sales:</span> {outlet.nama_karyawan}
+                </p>
+                <p className="text-sm text-gray-500">
+                  <span className="font-medium">Jumlah Faktur:</span> {outlet.jumlah_faktur}
+                </p>
+              </div>
+            ))}
+          </div>
         ) : (
-          <p className="text-gray-500">Tidak ada data faktur tersedia.</p>
+          <p className="text-gray-500 text-center py-10">Tidak ada data faktur tersedia.</p>
         )}
       </div>
     </div>

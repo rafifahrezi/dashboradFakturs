@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import { collection, addDoc, Timestamp, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Header } from '../components';
@@ -18,13 +19,16 @@ const Employees = () => {
     hari_pergantian: '',
     jatuh_tempo_pergantian: '',
   });
+  const [dialogVisible, setDialogVisible] = useState(false); // Fixed destructuring
+  const [dialogContent, setDialogContent] = useState({ title: '', content: '', isConfirm: false, onConfirm: null });
+  const dialogRef = useRef(null);
 
   // Fetch invoices from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'faktur'), (snapshot) =>
       setInvoices(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
     );
-    return unsubscribe;
+    return () => unsubscribe();
   }, []);
 
   // Fetch employees from Firestore
@@ -83,40 +87,20 @@ const Employees = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // Cek apakah karyawan sudah ada berdasarkan nama dan jabatan
-      const existingEmployee = employees.find((emp) =>
-        emp.nama_karyawan.toLowerCase().trim()
-        === formData.nama_karyawan.toLowerCase().trim()
-        && emp.jabatan.toLowerCase().trim()
-        === formData.jabatan.toLowerCase().trim()
-      );
-
-      // Jika belum ada, tambahkan karyawan baru
-      if (!existingEmployee) {
-        await addDoc(collection(db, 'karyawan'), {
-          nama_karyawan: formData.nama_karyawan.trim(),
-          jabatan: formData.jabatan.trim(),
-          no_telp: formData.no_telp.trim(),
-        });
-      }
-
-      // Tambahkan faktur
       await addDoc(collection(db, 'faktur'), {
-        no_invoice: formData.no_invoice.trim(),
-        kode_outlet: formData.kode_outlet.trim(),
-        nama_outlet: formData.nama_outlet.trim(),
+        no_invoice: formData.no_invoice,
+        kode_outlet: formData.kode_outlet,
+        nama_outlet: formData.nama_outlet,
+        nama_karyawan: formData.nama_karyawan,
+        jabatan: formData.jabatan,
+        no_telp: formData.no_telp,
         tanggal_transaksi: Timestamp.fromDate(new Date(formData.tanggal_transaksi)),
         jatuh_tempo: Timestamp.fromDate(new Date(formData.jatuh_tempo)),
         hari_pergantian: Timestamp.fromDate(new Date(formData.hari_pergantian)),
-        jatuh_tempo_pergantian: Timestamp.fromDate(
-          new Date(formData.jatuh_tempo_pergantian),
-        ),
-        nama_karyawan: formData.nama_karyawan.trim(), // link ke karyawan
+        jatuh_tempo_pergantian: Timestamp.fromDate(new Date(formData.jatuh_tempo_pergantian)),
       });
 
-      // Reset form
       setFormData({
         nama_karyawan: '',
         jabatan: '',
@@ -129,15 +113,43 @@ const Employees = () => {
         hari_pergantian: '',
         jatuh_tempo_pergantian: '',
       });
+      setDialogContent({
+        title: 'Sukses',
+        content: 'Karyawan dan faktur berhasil ditambahkan',
+        isConfirm: false,
+      });
+      setDialogVisible(true);
     } catch (error) {
-      // console.error('Error submitting form:', error);
+      setDialogContent({
+        title: 'Error',
+        content: 'Gagal menambahkan karyawan dan faktur. Coba lagi.',
+        isConfirm: false,
+      });
+      setDialogVisible(true);
     }
   };
+
+  const dialogButtons = [
+    {
+      click: () => setDialogVisible(false),
+      buttonModel: { content: 'OK', isPrimary: true },
+    },
+  ];
 
   return (
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Daftar Karyawan" />
-
+      <DialogComponent
+        ref={dialogRef}
+        visible={dialogVisible}
+        header={dialogContent.title}
+        content={dialogContent.content}
+        buttons={dialogButtons}
+        width="300px"
+        isModal
+        showCloseIcon
+        close={() => setDialogVisible(false)}
+      />
       {/* Form Tambah Karyawan dan Faktur */}
       <div className="mb-8">
         <h3 className="text-lg font-bold mb-4">Tambah Karyawan dan Faktur Baru</h3>
@@ -293,7 +305,7 @@ const Employees = () => {
                           <td className="border p-2">{invoice.kode_outlet}</td>
                           <td className="border p-2">{formatDate(invoice.tanggal_transaksi)}</td>
                           <td className="border p-2">{formatDate(invoice.jatuh_tempo)}</td>
-                          <td className="border p-2">{formatHari(invoice.hari_pergantian, 'ddd')}</td>
+                          <td className="border p-2">{formatHari(invoice.hari_pergantian)}</td>
                           <td className="border p-2">{tanggalTempo}</td>
                           <td className="border p-2">{reminder}</td>
                           <td className="border p-2 text-center">
