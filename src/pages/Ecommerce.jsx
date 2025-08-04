@@ -37,7 +37,7 @@ const Ecommerce = () => {
 
   return (
     <div className="mt-24">
-      {/* New Stats Section */}
+
       <div className="flex m-3 flex-wrap justify-center gap-4 items-center">
         {/* Total Outlets */}
         <div className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56 p-4 pt-9 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-200">
