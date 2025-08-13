@@ -1,599 +1,414 @@
-// import React from 'react';
-// import { BsCurrencyDollar } from 'react-icons/bs';
-// import { GoPrimitiveDot } from 'react-icons/go';
-// import { IoIosMore } from 'react-icons/io';
-// import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
-
-// import { Stacked, Pie, Button, LineChart, SparkLine } from '../components';
-// import { earningData, medicalproBranding, recentTransactions, weeklyStats, dropdownData, SparklineAreaData, ecomPieChartData } from '../data/dummy';
-// import { useStateContext } from '../contexts/ContextProvider';
-// import product9 from '../data/product9.jpg';
-
-// const DropDown = ({ currentMode }) => (
-//   <div className="w-28 border-1 border-color px-2 py-1 rounded-md">
-//     <DropDownListComponent id="time" fields={{ text: 'Time', value: 'Id' }} style={{ border: 'none', color: (currentMode === 'Dark') && 'white' }} value="1" dataSource={dropdownData} popupHeight="220px" popupWidth="120px" />
-//   </div>
-// );
-
-// const Ecommerce = () => {
-//   const { currentColor, currentMode } = useStateContext();
-
-//   return (
-//     <div className="mt-24">
-//       <div className="flex flex-wrap lg:flex-nowrap justify-center ">
-//         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-8 pt-9 m-3 bg-hero-pattern bg-no-repeat bg-cover bg-center">
-//           <div className="flex justify-between items-center">
-//             <div>
-//               <p className="font-bold text-gray-400">Earnings</p>
-//               <p className="text-2xl">$63,448.78</p>
-//             </div>
-//             <button
-//               type="button"
-//               style={{ backgroundColor: currentColor }}
-//               className="text-2xl opacity-0.9 text-white hover:drop-shadow-xl rounded-full  p-4"
-//             >
-//               <BsCurrencyDollar />
-//             </button>
-//           </div>
-//           <div className="mt-6">
-//             <Button
-//               color="white"
-//               bgColor={currentColor}
-//               text="Download"
-//               borderRadius="10px"
-//             />
-//           </div>
-//         </div>
-//         <div className="flex m-3 flex-wrap justify-center gap-1 items-center">
-//           {earningData.map((item) => (
-//             <div key={item.title} className="bg-white h-44 dark:text-gray-200 dark:bg-secondary-dark-bg md:w-56  p-4 pt-9 rounded-2xl ">
-//               <button
-//                 type="button"
-//                 style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-//                 className="text-2xl opacity-0.9 rounded-full  p-4 hover:drop-shadow-xl"
-//               >
-//                 {item.icon}
-//               </button>
-//               <p className="mt-3">
-//                 <span className="text-lg font-semibold">{item.amount}</span>
-//                 <span className={`text-sm text-${item.pcColor} ml-2`}>
-//                   {item.percentage}
-//                 </span>
-//               </p>
-//               <p className="text-sm text-gray-400  mt-1">{item.title}</p>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       <div className="flex gap-10 flex-wrap justify-center">
-//         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg m-3 p-4 rounded-2xl md:w-780  ">
-//           <div className="flex justify-between">
-//             <p className="font-semibold text-xl">Revenue Updates</p>
-//             <div className="flex items-center gap-4">
-//               <p className="flex items-center gap-2 text-gray-600 hover:drop-shadow-xl">
-//                 <span>
-//                   <GoPrimitiveDot />
-//                 </span>
-//                 <span>Expense</span>
-//               </p>
-//               <p className="flex items-center gap-2 text-green-400 hover:drop-shadow-xl">
-//                 <span>
-//                   <GoPrimitiveDot />
-//                 </span>
-//                 <span>Budget</span>
-//               </p>
-//             </div>
-//           </div>
-//           <div className="mt-10 flex gap-10 flex-wrap justify-center">
-//             <div className=" border-r-1 border-color m-4 pr-10">
-//               <div>
-//                 <p>
-//                   <span className="text-3xl font-semibold">$93,438</span>
-//                   <span className="p-1.5 hover:drop-shadow-xl cursor-pointer rounded-full text-white bg-green-400 ml-3 text-xs">
-//                     23%
-//                   </span>
-//                 </p>
-//                 <p className="text-gray-500 mt-1">Budget</p>
-//               </div>
-//               <div className="mt-8">
-//                 <p className="text-3xl font-semibold">$48,487</p>
-
-//                 <p className="text-gray-500 mt-1">Expense</p>
-//               </div>
-
-//               <div className="mt-5">
-//                 <SparkLine currentColor={currentColor} id="line-sparkLine" type="Line" height="80px" width="250px" data={SparklineAreaData} color={currentColor} />
-//               </div>
-//               <div className="mt-10">
-//                 <Button
-//                   color="white"
-//                   bgColor={currentColor}
-//                   text="Download Report"
-//                   borderRadius="10px"
-//                 />
-//               </div>
-//             </div>
-//             <div>
-//               <Stacked currentMode={currentMode} width="320px" height="360px" />
-//             </div>
-//           </div>
-//         </div>
-//         <div>
-//           <div
-//             className=" rounded-2xl md:w-400 p-4 m-3"
-//             style={{ backgroundColor: currentColor }}
-//           >
-//             <div className="flex justify-between items-center ">
-//               <p className="font-semibold text-white text-2xl">Earnings</p>
-
-//               <div>
-//                 <p className="text-2xl text-white font-semibold mt-8">$63,448.78</p>
-//                 <p className="text-gray-200">Monthly revenue</p>
-//               </div>
-//             </div>
-
-//             <div className="mt-4">
-//               <SparkLine currentColor={currentColor} id="column-sparkLine" height="100px" type="Column" data={SparklineAreaData} width="320" color="rgb(242, 252, 253)" />
-//             </div>
-//           </div>
-
-//           <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl md:w-400 p-8 m-3 flex justify-center items-center gap-10">
-//             <div>
-//               <p className="text-2xl font-semibold ">$43,246</p>
-//               <p className="text-gray-400">Yearly sales</p>
-//             </div>
-
-//             <div className="w-40">
-//               <Pie id="pie-chart" data={ecomPieChartData} legendVisiblity={false} height="160px" />
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="flex gap-10 m-4 flex-wrap justify-center">
-//         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl">
-//           <div className="flex justify-between items-center gap-2">
-//             <p className="text-xl font-semibold">Recent Transactions</p>
-//             <DropDown currentMode={currentMode} />
-//           </div>
-//           <div className="mt-10 w-72 md:w-400">
-//             {recentTransactions.map((item) => (
-//               <div key={item.title} className="flex justify-between mt-4">
-//                 <div className="flex gap-4">
-//                   <button
-//                     type="button"
-//                     style={{
-//                       color: item.iconColor,
-//                       backgroundColor: item.iconBg,
-//                     }}
-//                     className="text-2xl rounded-lg p-4 hover:drop-shadow-xl"
-//                   >
-//                     {item.icon}
-//                   </button>
-//                   <div>
-//                     <p className="text-md font-semibold">{item.title}</p>
-//                     <p className="text-sm text-gray-400">{item.desc}</p>
-//                   </div>
-//                 </div>
-//                 <p className={`text-${item.pcColor}`}>{item.amount}</p>
-//               </div>
-//             ))}
-//           </div>
-//           <div className="flex justify-between items-center mt-5 border-t-1 border-color">
-//             <div className="mt-3">
-//               <Button
-//                 color="white"
-//                 bgColor={currentColor}
-//                 text="Add"
-//                 borderRadius="10px"
-//               />
-//             </div>
-
-//             <p className="text-gray-400 text-sm">36 Recent Transactions</p>
-//           </div>
-//         </div>
-//         <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg p-6 rounded-2xl w-96 md:w-760">
-//           <div className="flex justify-between items-center gap-2 mb-10">
-//             <p className="text-xl font-semibold">Sales Overview</p>
-//             <DropDown currentMode={currentMode} />
-//           </div>
-//           <div className="md:w-full overflow-auto">
-//             <LineChart />
-//           </div>
-//         </div>
-//       </div>
-
-//       <div className="flex flex-wrap justify-center">
-//         <div className="md:w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-//           <div className="flex justify-between">
-//             <p className="text-xl font-semibold">Weekly Stats</p>
-//             <button type="button" className="text-xl font-semibold text-gray-500">
-//               <IoIosMore />
-//             </button>
-//           </div>
-
-//           <div className="mt-10 ">
-//             {weeklyStats.map((item) => (
-//               <div key={item.title} className="flex justify-between mt-4 w-full">
-//                 <div className="flex gap-4">
-//                   <button
-//                     type="button"
-//                     style={{ background: item.iconBg }}
-//                     className="text-2xl hover:drop-shadow-xl text-white rounded-full p-3"
-//                   >
-//                     {item.icon}
-//                   </button>
-//                   <div>
-//                     <p className="text-md font-semibold">{item.title}</p>
-//                     <p className="text-sm text-gray-400">{item.desc}</p>
-//                   </div>
-//                 </div>
-
-//                 <p className={`text-${item.pcColor}`}>{item.amount}</p>
-//               </div>
-//             ))}
-//             <div className="mt-4">
-//               <SparkLine currentColor={currentColor} id="area-sparkLine" height="160px" type="Area" data={SparklineAreaData} width="320" color="rgb(242, 252, 253)" />
-//             </div>
-//           </div>
-
-//         </div>
-//         <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-//           <div className="flex justify-between">
-//             <p className="text-xl font-semibold">MedicalPro Branding</p>
-//             <button type="button" className="text-xl font-semibold text-gray-400">
-//               <IoIosMore />
-//             </button>
-//           </div>
-//           <p className="text-xs cursor-pointer hover:drop-shadow-xl font-semibold rounded-lg w-24 bg-orange-400 py-0.5 px-2 text-gray-200 mt-10">
-//             16 APR, 2021
-//           </p>
-
-//           <div className="flex gap-4 border-b-1 border-color mt-6">
-//             {medicalproBranding.data.map((item) => (
-//               <div key={item.title} className="border-r-1 border-color pr-4 pb-2">
-//                 <p className="text-xs text-gray-400">{item.title}</p>
-//                 <p className="text-sm">{item.desc}</p>
-//               </div>
-//             ))}
-//           </div>
-//           <div className="border-b-1 border-color pb-4 mt-2">
-//             <p className="text-md font-semibold mb-2">Teams</p>
-
-//             <div className="flex gap-4">
-//               {medicalproBranding.teams.map((item) => (
-//                 <p
-//                   key={item.name}
-//                   style={{ background: item.color }}
-//                   className="cursor-pointer hover:drop-shadow-xl text-white py-0.5 px-3 rounded-lg text-xs"
-//                 >
-//                   {item.name}
-//                 </p>
-//               ))}
-//             </div>
-//           </div>
-//           <div className="mt-2">
-//             <p className="text-md font-semibold mb-2">Leaders</p>
-//             <div className="flex gap-4">
-//               {medicalproBranding.leaders.map((item, index) => (
-//                 <img key={index} className="rounded-full w-8 h-8" src={item.image} alt="" />
-//               ))}
-//             </div>
-//           </div>
-//           <div className="flex justify-between items-center mt-5 border-t-1 border-color">
-//             <div className="mt-3">
-//               <Button
-//                 color="white"
-//                 bgColor={currentColor}
-//                 text="Add"
-//                 borderRadius="10px"
-//               />
-//             </div>
-
-//             <p className="text-gray-400 text-sm">36 Recent Transactions</p>
-//           </div>
-//         </div>
-//         <div className="w-400 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-2xl p-6 m-3">
-//           <div className="flex justify-between">
-//             <p className="text-xl font-semibold">Daily Activities</p>
-//             <button type="button" className="text-xl font-semibold text-gray-500">
-//               <IoIosMore />
-//             </button>
-//           </div>
-//           <div className="mt-10">
-//             <img
-//               className="md:w-96 h-50 "
-//               src={product9}
-//               alt=""
-//             />
-//             <div className="mt-8">
-//               <p className="font-semibold text-lg">React 18 coming soon!</p>
-//               <p className="text-gray-400 ">By Johnathan Doe</p>
-//               <p className="mt-8 text-sm text-gray-400">
-//                 This will be the small description for the news you have shown
-//                 here. There could be some great info.
-//               </p>
-//               <div className="mt-3">
-//                 <Button
-//                   color="white"
-//                   bgColor={currentColor}
-//                   text="Read More"
-//                   borderRadius="10px"
-//                 />
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Ecommerce;
-==
-// (2)
-import React, { useState, useEffect } from 'react';
-import { ScheduleComponent, ViewsDirective, ViewDirective, Day, Week, Month, Inject } from '@syncfusion/ej2-react-schedule';
+import React, { useEffect, useState, useRef } from 'react';
+import { DialogComponent } from '@syncfusion/ej2-react-popups';
+import { collection, addDoc, Timestamp, onSnapshot, doc, deleteDoc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import { collection, getDocs, query, where } from 'firebase/firestore'; 
-import { Header } from '../components';
+import Header from '../components/Header';
 
 const Fakturs = () => {
   const [invoices, setInvoices] = useState([]);
   const [formData, setFormData] = useState({
-    id: '',
-    storeName: '',
-    transactionDate: '',
-    dueDate: '',
-    replacementDate: '',
-    replacementDueDate: '',
-    description: '',
+    no_invoice: '',
+    kode_outlet: '',
+    nama_outlet: '',
+    tanggal_transaksi: '',
+    jatuh_tempo: '',
+    hari_pergantian: '',
+    jatuh_tempo_pergantian: '',
+    nama_karyawan: '',
+    jabatan: '',
+    no_telp: '',
   });
-  const [notification, setNotification] = useState({ message: '', type: '', visible: false });
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
+  const [deleteDataId, setDeleteDataId] = useState(null);
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogContent, setDialogContent] = useState({ title: '', content: '', isConfirm: false, onConfirm: null });
+  const dialogRef = useRef(null);
 
-  const storeId = 'invoices'; // Sesuai dengan ID toko di Firestore
-
-  const fetchInvoices = async () => {
-    try {
-      const invoicesRef = collection(db, 'dashboard-lia', storeId);
-      // Contoh: Ambil faktur dengan dueDate sebelum 1 Juni 2025
-      const q = query(invoicesRef, where('dueDate', '<', new Date('2025-06-01T00:00:00')));
-      const snapshot = await getDocs(q);
-      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setInvoices(data);
-    } catch (error) {
-      showNotification('Gagal mengambil data faktur: ' + error.message, 'error');
-    }
-  };
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const showNotification = (message, type) => {
-    setNotification({ message, type, visible: true });
-    setTimeout(() => {
-      setNotification({ message: '', type: '', visible: false });
-    }, 3000);
-  };
-
-  const addInvoice = async (e) => {
-    e.preventDefault();
-
-    // Validasi input
-    if (!formData.storeName || !formData.transactionDate || !formData.dueDate) {
-      showNotification('Harap isi semua kolom yang diperlukan (Nama Toko, Tanggal Transaksi, Jatuh Tempo)', 'error');
-      return;
-    }
-    const newInvoice = {
-      id: formData.id || '',
-      storeName: formData.storeName,
-      description: formData.description || '',
-      transactionDate: new Date(formData.transactionDate),
-      dueDate: new Date(formData.dueDate),
-      StartTime: new Date(formData.dueDate), // Tambah untuk kalender
-      EndTime: new Date(formData.dueDate), // Tambah untuk kalender
-      replacementDate: formData.replacementDate ? new Date(formData.replacementDate) : null,
-      replacementDueDate: formData.replacementDueDate ? new Date(formData.replacementDueDate) : null,
-      CategoryColor: '#357cd2' // Tambah untuk kalender
-    };
-
-    try {
-      const invoicesRef = collection(db, 'invoices', storeId); // Path sesuai gambar
-      const docRef = await addDoc(invoicesRef, newInvoice);
-
-      // Tambahkan data ke tabel secara lokal
-      setInvoices(prev => [...prev, { id: docRef.id, ...newInvoice }]);
-
-      // Reset form input
-      setFormData({
-        id: '',
-        storeName: '',
-        transactionDate: '',
-        dueDate: '',
-        replacementDate: '',
-        replacementDueDate: '',
-        description: '',
-      });
-
-      // Tampilkan notifikasi sukses
-      showNotification('Faktur berhasil ditambahkan!', 'success');
-    } catch (error) {
-      showNotification('Gagal menambahkan faktur: ' + error.message, 'error');
-    }
-  };
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, 'faktur'), (snapshot) => {
+      setInvoices(snapshot.docs.map((document) => ({ id: document.id, ...document.data() })));
+    });
+    return () => unsubscribe();
+  }, []);
 
   const formatDate = (date) => {
-    if (!date) return '-';
-    const d = new Date(date.seconds ? date.seconds * 1000 : date);
-    return isNaN(d) ? '-' : d.toLocaleDateString('id-ID', {
+    if (!date || !(date instanceof Timestamp)) return '-';
+    return date.toDate().toLocaleDateString('id-ID', {
       day: '2-digit',
       month: 'long',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
-  const getReminderStatus = (dueDate) => {
-    if (!dueDate) return '-';
-    const today = new Date();
-    const due = new Date(dueDate.seconds ? dueDate.seconds * 1000 : dueDate);
-    if (isNaN(due)) return '-';
-    const diff = Math.ceil((due - today) / (1000 * 60 * 60 * 24));
-    return diff >= 0 ? `Pengingat: ${diff} hari lagi` : `Lewat ${Math.abs(diff)} hari`;
+  const formatHari = (timestamp) => {
+    if (!timestamp || typeof timestamp.toDate !== 'function') return 'Tanggal tidak valid';
+    const date = timestamp.toDate();
+    const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+    return days[date.getDay()];
   };
 
-  useEffect(() => {
-    fetchInvoices();
-  }, []);
+  const getReminderStatus = (invoice) => {
+    const jatuhTempo = invoice?.jatuh_tempo_pergantian;
+    if (!jatuhTempo || typeof jatuhTempo.toDate !== 'function') {
+      return 'Tanggal tidak valid';
+    }
+
+    const now = new Date();
+    const dueDate = jatuhTempo.toDate();
+    const diffTime = dueDate - now;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays < 0) return '❌ Lewat tempo';
+    if (diffDays === 0) return '⚠️ Jatuh tempo hari ini';
+
+    return `⏰ Pengingat: ${diffDays} hari lagi`;
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // Create new employee document
+      await addDoc(collection(db, 'karyawan'), {
+        nama_karyawan: formData.nama_karyawan,
+        jabatan: formData.jabatan,
+        no_telp: formData.no_telp,
+      });
+
+      await addDoc(collection(db, 'faktur'), {
+        no_invoice: formData.no_invoice,
+        kode_outlet: formData.kode_outlet,
+        nama_outlet: formData.nama_outlet,
+        nama_karyawan: formData.nama_karyawan,
+        jabatan: formData.jabatan,
+        no_telp: formData.no_telp,
+        tanggal_transaksi: Timestamp.fromDate(new Date(formData.tanggal_transaksi)),
+        jatuh_tempo: Timestamp.fromDate(new Date(formData.jatuh_tempo)),
+        hari_pergantian: Timestamp.fromDate(new Date(formData.hari_pergantian)),
+        jatuh_tempo_pergantian: Timestamp.fromDate(new Date(formData.jatuh_tempo_pergantian)),
+      });
+
+      setFormData({
+        nama_karyawan: '',
+        jabatan: '',
+        no_telp: '',
+        no_invoice: '',
+        kode_outlet: '',
+        nama_outlet: '',
+        tanggal_transaksi: '',
+        jatuh_tempo: '',
+        hari_pergantian: '',
+        jatuh_tempo_pergantian: '',
+      });
+      setDialogContent({
+        title: 'Sukses',
+        content: 'Faktur berhasil ditambahkan',
+        isConfirm: false,
+      });
+      setDialogVisible(true);
+    } catch (error) {
+      setDialogContent({
+        title: 'Error',
+        content: 'Gagal menambahkan faktur. Coba lagi.',
+        isConfirm: false,
+      });
+      setDialogVisible(true);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    setDeleteDataId(id);
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteDataId) {
+      try {
+        const invoiceToDelete = invoices.find((inv) => inv.id === deleteDataId);
+        if (invoiceToDelete) {
+          // Hapus dokumen faktur
+          await deleteDoc(doc(db, 'faktur', deleteDataId));
+
+          // Cari dan hapus dokumen karyawan berdasarkan nama_karyawan
+          const karyawanQuery = query(collection(db, 'karyawan'), where('nama_karyawan', '==', invoiceToDelete.nama_karyawan));
+          const karyawanSnapshot = await getDocs(karyawanQuery);
+          const deleteKaryawanPromises = karyawanSnapshot.docs.map(async (docSnapshot) => {
+            await deleteDoc(doc(db, 'karyawan', docSnapshot.id));
+          });
+          await Promise.all(deleteKaryawanPromises);
+
+          setDialogContent({
+            title: 'Sukses',
+            content: 'Faktur dan karyawan terkait berhasil dihapus',
+            isConfirm: false,
+          });
+        } else {
+          throw new Error('Faktur tidak ditemukan');
+        }
+      } catch (error) {
+        setDialogContent({
+          title: 'Error',
+          content: `Gagal menghapus faktur dan karyawan: ${error.message}`,
+          isConfirm: false,
+        });
+      }
+      setDialogVisible(true);
+      setDeleteModalOpen(false);
+      setDeleteDataId(null);
+    }
+  };
+
+  const handleEdit = (invoice) => {
+    if (!invoice || !invoice.id) {
+      setDialogContent({
+        title: 'Error',
+        content: 'Data faktur tidak valid untuk pengeditan.',
+        isConfirm: false,
+      });
+      setDialogVisible(true);
+      return;
+    }
+    const editedData = {
+      id: invoice.id,
+      no_invoice: invoice.no_invoice || '',
+      kode_outlet: invoice.kode_outlet || '',
+      nama_outlet: invoice.nama_outlet || '',
+      nama_karyawan: invoice.nama_karyawan || '',
+      jabatan: invoice.jabatan || '',
+      no_telp: invoice.no_telp || '',
+      tanggal_transaksi: invoice.tanggal_transaksi instanceof Timestamp
+        ? invoice.tanggal_transaksi.toDate().toISOString().split('T')[0]
+        : invoice.tanggal_transaksi || '',
+      jatuh_tempo: invoice.jatuh_tempo instanceof Timestamp
+        ? invoice.jatuh_tempo.toDate().toISOString().split('T')[0]
+        : invoice.jatuh_tempo || '',
+      hari_pergantian: invoice.hari_pergantian instanceof Timestamp
+        ? invoice.hari_pergantian.toDate().toISOString().split('T')[0]
+        : invoice.hari_pergantian || '',
+      jatuh_tempo_pergantian: invoice.jatuh_tempo_pergantian instanceof Timestamp
+        ? invoice.jatuh_tempo_pergantian.toDate().toISOString().split('T')[0]
+        : invoice.jatuh_tempo_pergantian || '',
+    };
+    setEditData(editedData);
+    setEditModalOpen(true);
+  };
+
+  const handleSaveEdit = async () => {
+    if (editData) {
+      try {
+        await updateDoc(doc(db, 'faktur', editData.id), {
+          no_invoice: editData.no_invoice,
+          kode_outlet: editData.kode_outlet,
+          nama_outlet: editData.nama_outlet,
+          nama_karyawan: editData.nama_karyawan,
+          jabatan: editData.jabatan,
+          no_telp: editData.no_telp,
+          tanggal_transaksi: Timestamp.fromDate(new Date(editData.tanggal_transaksi)),
+          jatuh_tempo: Timestamp.fromDate(new Date(editData.jatuh_tempo)),
+          hari_pergantian: Timestamp.fromDate(new Date(editData.hari_pergantian)),
+          jatuh_tempo_pergantian: Timestamp.fromDate(new Date(editData.jatuh_tempo_pergantian)),
+        });
+        setEditModalOpen(false);
+        setEditData(null);
+        setDialogContent({
+          title: 'Sukses',
+          content: 'Faktur berhasil diperbarui',
+          isConfirm: false,
+        });
+        setDialogVisible(true);
+      } catch (error) {
+        setDialogContent({
+          title: 'Error',
+          content: 'Gagal memperbarui faktur. Coba lagi.',
+          isConfirm: false,
+        });
+        setDialogVisible(true);
+      }
+    }
+  };
+
+  const dialogButtons = [
+    {
+      click: () => {
+        setDialogVisible(false);
+        if (dialogContent.isConfirm && dialogContent.onConfirm) {
+          dialogContent.onConfirm();
+        }
+      },
+      buttonModel: { content: dialogContent.isConfirm ? 'Ya' : 'OK', isPrimary: true },
+    },
+    dialogContent.isConfirm && {
+      click: () => setDialogVisible(false),
+      buttonModel: { content: 'Batal', isPrimary: false },
+    },
+  ].filter(Boolean);
 
   return (
-    <div className="m-2 md:m-10 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="App" title="Faktur Schedule" />
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+      <Header category="App" title="Daftar Faktur" />
+      <DialogComponent
+        ref={dialogRef}
+        visible={dialogVisible}
+        header={dialogContent.title}
+        content={dialogContent.content}
+        buttons={dialogButtons}
+        width="16rem md:18rem"
+        isModal
+        showCloseIcon
+        close={() => setDialogVisible(false)}
+      />
+      <div className="mb-1 md:mb-2">
+        <h3 className="text-sm md:text-base font-medium mb-0.5 md:mb-1">Tambah Faktur Baru</h3>
+        <form className="grid md:grid-cols-3 gap-4" onSubmit={handleSubmit}>
+          <input type="text" name="nama_karyawan" placeholder="Nama Karyawan" className="p-2 border rounded" value={formData.nama_karyawan} onChange={handleInputChange} required />
+          <input type="text" name="jabatan" placeholder="Jabatan" className="p-2 border rounded" value={formData.jabatan} onChange={handleInputChange} required />
+          <input type="text" name="no_telp" placeholder="No Telepon" className="p-2 border rounded" value={formData.no_telp} onChange={handleInputChange} required />
+          <input type="text" name="no_invoice" placeholder="No Invoice" className="p-2 border rounded" value={formData.no_invoice} onChange={handleInputChange} required />
+          <input type="text" name="kode_outlet" placeholder="Kode Outlet" className="p-2 border rounded" value={formData.kode_outlet} onChange={handleInputChange} required />
+          <input type="text" name="nama_outlet" placeholder="Nama Outlet" className="p-2 border rounded" value={formData.nama_outlet} onChange={handleInputChange} required />
 
-      {/* Notifikasi Kustom */}
-      {notification.visible && (
-        <div
-          className={`fixed top-4 right-4 p-4 rounded shadow-lg text-white ${notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'}`}
-        >
-          {notification.message}
-        </div>
-      )}
+          <div>
+            <input type="date" name="tanggal_transaksi" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={formData.tanggal_transaksi} onChange={handleInputChange} required />
+            <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Transaksi</h6>
+          </div>
+          <div>
+            <input type="date" name="jatuh_tempo" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={formData.jatuh_tempo} onChange={handleInputChange} required />
+            <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Jatuh Tempo</h6>
+          </div>
+          <div>
+            <input type="date" name="hari_pergantian" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={formData.hari_pergantian} onChange={handleInputChange} required />
+            <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Hari Pergantian</h6>
+          </div>
+          <div>
+            <input type="date" name="jatuh_tempo_pergantian" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={formData.jatuh_tempo_pergantian} onChange={handleInputChange} required />
+            <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Jatuh Tempo Pergantian</h6>
+          </div>
 
-      {/* Form Input Faktur */}
-      <form onSubmit={addInvoice} className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium mb-1">ID Faktur</label>
-          <input
-            type="text"
-            name="id"
-            value={formData.id}
-            onChange={handleInputChange}
-            placeholder="Contoh: 001"
-            className="border p-2 rounded w-full"
-          />
-        </div>
+          <div className="md:col-span-3">
+            <button type="submit" className="bg-blue-500 text-white p-0.5 md:p-1 rounded w-full text-xs md:text-sm">
+              Tambah Faktur
+            </button>
+          </div>
+        </form>
+      </div>
 
-        <div>
-          <label className="block text-sm font-medium mb-1">Nama Toko</label>
-          <input
-            type="text"
-            name="storeName"
-            value={formData.storeName}
-            onChange={handleInputChange}
-            placeholder="Contoh: Toko Dali"
-            required
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Deskripsi</label>
-          <input
-            type="text"
-            name="description"
-            value={formData.description}
-            onChange={handleInputChange}
-            placeholder="Keterangan faktur"
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Tanggal Transaksi</label>
-          <input
-            type="datetime-local"
-            name="transactionDate"
-            value={formData.transactionDate}
-            onChange={handleInputChange}
-            required
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Jatuh Tempo</label>
-          <input
-            type="datetime-local"
-            name="dueDate"
-            value={formData.dueDate}
-            onChange={handleInputChange}
-            required
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Hari Penggantian</label>
-          <input
-            type="datetime-local"
-            name="replacementDate"
-            value={formData.replacementDate}
-            onChange={handleInputChange}
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-1">Jatuh Tempo Penggantian</label>
-          <input
-            type="datetime-local"
-            name="replacementDueDate"
-            value={formData.replacementDueDate}
-            onChange={handleInputChange}
-            className="border p-2 rounded w-full"
-          />
-        </div>
-
-        <button type="submit" className="col-span-1 md:col-span-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-          Tambah Faktur
-        </button>
-      </form>
-
-      {/* TABEL */}
-      <div className="mb-8">
-        <h3 className="text-lg font-bold mb-4">Daftar Faktur</h3>
+      <div>
+        <h3 className="text-sm md:text-base font-medium mb-0.5 md:mb-1">Daftar Faktur</h3>
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border p-2">ID</th> {/* Tambah kolom ID */}
-              <th className="border p-2">Nama Toko</th>
-              <th className="border p-2">Tanggal Transaksi</th>
-              <th className="border p-2">Jatuh Tempo</th>
-              <th className="border p-2">Hari Penggantian</th>
-              <th className="border p-2">Jatuh Tempo Penggantian</th>
-              <th className="border p-2">Pengingat</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Karyawan Handle</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">No Faktur</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Kode Outlet</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Nama Outlet</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Tanggal Transaksi</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Jatuh Tempo</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Hari Pergantian</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Jatuh Tempo Pergantian</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Pengingat</th>
+              <th className="border p-0.25 md:p-0.5 text-xs md:text-sm">Aksi</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((invoice) => (
               <tr key={invoice.id}>
-                <td className="border p-2">{invoice.id || '-'}</td> {/* Menampilkan field id */}
-                <td className="border p-2">{invoice.storeName || '-'}</td>
-                <td className="border p-2">{formatDate(invoice.transactionDate)}</td>
-                <td className="border p-2">{formatDate(invoice.dueDate)}</td>
-                <td className="border p-2">{formatDate(invoice.replacementDate)}</td>
-                <td className="border p-2">{formatDate(invoice.replacementDueDate)}</td>
-                <td className="border p-2">{getReminderStatus(invoice.dueDate)}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{invoice.nama_karyawan}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{invoice.no_invoice}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{invoice.kode_outlet}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{invoice.nama_outlet}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{formatDate(invoice.tanggal_transaksi)}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{formatDate(invoice.jatuh_tempo)}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{formatHari(invoice.hari_pergantian)}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{formatDate(invoice.jatuh_tempo_pergantian)}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">{getReminderStatus(invoice)}</td>
+                <td className="border p-0.25 md:p-0.5 text-xs md:text-sm">
+                  <div className="flex space-x-0.5 md:space-x-1">
+                    <span
+                      className="text-yellow-600 hover:text-yellow-800 cursor-pointer transition-colors duration-200 text-xs md:text-sm"
+                      onClick={() => handleEdit(invoice)}
+                    >
+                      Edit
+                    </span>
+                    <span
+                      className="text-red-600 hover:text-red-800 cursor-pointer transition-colors duration-200 text-xs md:text-sm"
+                      onClick={() => handleDelete(invoice.id)}
+                    >
+                      Hapus
+                    </span>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
 
-      Kalender
-      <ScheduleComponent
-        height="650px"
-        eventSettings={{ dataSource: invoices }}
-        selectedDate={new Date()}
-      >
-        <ViewsDirective>
-          <ViewDirective option="Day" />
-          <ViewDirective option="Week" />
-          <ViewDirective option="Month" />
-        </ViewsDirective>
-        <Inject services={[Day, Week, Month]} />
-      </ScheduleComponent>
+      {editModalOpen && editData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-1 md:p-2 rounded shadow-lg w-10/12 md:w-1/3 max-h-[75vh] overflow-y-auto">
+            <h3 className="text-sm md:text-base font-medium mb-0.5 md:mb-1">Edit Faktur</h3>
+            <form className="grid md:grid-cols-2 gap-0.5 md:gap-1">
+              <input type="text" name="nama_karyawan" placeholder="Nama Karyawan" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.nama_karyawan || ''} onChange={handleEditInputChange} required />
+              <input type="text" name="jabatan" placeholder="Jabatan" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.jabatan || ''} onChange={handleEditInputChange} required />
+              <input type="text" name="no_telp" placeholder="No Telepon" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.no_telp || ''} onChange={handleEditInputChange} required />
+              <input type="text" name="no_invoice" placeholder="No Invoice" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.no_invoice || ''} onChange={handleEditInputChange} required />
+              <input type="text" name="kode_outlet" placeholder="Kode Outlet" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.kode_outlet || ''} onChange={handleEditInputChange} required />
+              <input type="text" name="nama_outlet" placeholder="Nama Outlet" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.nama_outlet || ''} onChange={handleEditInputChange} required />
+              <div>
+                <input type="date" name="tanggal_transaksi" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.tanggal_transaksi || ''} onChange={handleEditInputChange} required />
+                <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Transaksi</h6>
+              </div>
+              <div>
+                <input type="date" name="jatuh_tempo" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.jatuh_tempo || ''} onChange={handleEditInputChange} required />
+                <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Jatuh Tempo</h6>
+              </div>
+              <div>
+                <input type="date" name="hari_pergantian" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.hari_pergantian || ''} onChange={handleEditInputChange} required />
+                <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Hari Pergantian</h6>
+              </div>
+              <div>
+                <input type="date" name="jatuh_tempo_pergantian" className="p-0.5 md:p-1 border rounded text-xs md:text-sm" value={editData.jatuh_tempo_pergantian || ''} onChange={handleEditInputChange} required />
+                <h6 className="text-xxs md:text-xs text-gray-500 mt-0.5 md:mt-0.5">Tanggal Jatuh Tempo Pergantian</h6>
+              </div>
+              <div className="md:col-span-2 flex justify-end gap-0.5 md:gap-1">
+                <button type="button" className="bg-gray-500 text-white p-0.5 md:p-1 rounded text-xs md:text-sm" onClick={() => setEditModalOpen(false)}>Batal</button>
+                <button type="button" className="bg-green-500 text-white p-0.5 md:p-1 rounded text-xs md:text-sm" onClick={handleSaveEdit}>Simpan</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {deleteModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-1 md:p-2 rounded shadow-lg w-10/12 md:w-1/3 max-h-[75vh] overflow-y-auto">
+            <h3 className="text-sm md:text-base font-medium mb-0.5 md:mb-1">Konfirmasi Hapus</h3>
+            <div className="grid gap-0.5 md:gap-1">
+              <p className="text-xs md:text-sm">Apakah Anda yakin ingin menghapus faktur ini beserta karyawan terkait?</p>
+              <div className="md:col-span-2 flex justify-end gap-0.5 md:gap-1">
+                <button type="button" className="bg-gray-500 text-white p-0.5 md:p-1 rounded text-xs md:text-sm" onClick={() => setDeleteModalOpen(false)}>Batal</button>
+                <button type="button" className="bg-red-500 text-white p-0.5 md:p-1 rounded text-xs md:text-sm" onClick={handleConfirmDelete}>Hapus</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -237,7 +237,7 @@ const Fakturs = () => {
   ].filter(Boolean);
 
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-14 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="App" title="Daftar Faktur" />
       <DialogComponent
         ref={dialogRef}
@@ -287,43 +287,43 @@ const Fakturs = () => {
 
       <div>
         <h3 className="text-lg font-bold mb-4">Daftar Faktur</h3>
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse mx-auto">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border p-2">Karyawan Handle</th>
-              <th className="border p-2">No Faktur</th>
-              <th className="border p-2">Kode Outlet</th>
-              <th className="border p-2">Nama Outlet</th>
-              <th className="border p-2">Tanggal Transaksi</th>
-              <th className="border p-2">Jatuh Tempo</th>
-              <th className="border p-2">Hari Pergantian</th>
-              <th className="border p-2">Jatuh Tempo Pergantian</th>
-              <th className="border p-2">Pengingat</th>
-              <th className="border p-2">Aksi</th>
+              <th className="border p-1 text-sm">Karyawan Handle</th>
+              <th className="border p-1 text-sm">No Faktur</th>
+              <th className="border p-1 text-sm">Kode Outlet</th>
+              <th className="border p-1 text-sm">Nama Outlet</th>
+              <th className="border p-1 text-sm">Tanggal Transaksi</th>
+              <th className="border p-1 text-sm">Jatuh Tempo</th>
+              <th className="border p-1 text-sm">Hari Pergantian</th>
+              <th className="border p-1 text-sm">Jatuh Tempo Pergantian</th>
+              <th className="border p-1 text-sm">Pengingat</th>
+              <th className="border p-1 text-sm">Aksi</th>
             </tr>
           </thead>
           <tbody>
             {invoices.map((invoice) => (
               <tr key={invoice.id}>
-                <td className="border p-2">{invoice.nama_karyawan}</td>
-                <td className="border p-2">{invoice.no_invoice}</td>
-                <td className="border p-2">{invoice.kode_outlet}</td>
-                <td className="border p-2">{invoice.nama_outlet}</td>
-                <td className="border p-2">{formatDate(invoice.tanggal_transaksi)}</td>
-                <td className="border p-2">{formatDate(invoice.jatuh_tempo)}</td>
-                <td className="border p-2">{formatHari(invoice.hari_pergantian)}</td>
-                <td className="border p-2">{formatDate(invoice.jatuh_tempo_pergantian)}</td>
-                <td className="border p-2">{getReminderStatus(invoice)}</td>
-                <td className="border p-2">
-                  <div className="flex space-x-2">
+                <td className="border p-1 text-sm">{invoice.nama_karyawan}</td>
+                <td className="border p-1 text-sm">{invoice.no_invoice}</td>
+                <td className="border p-1 text-sm">{invoice.kode_outlet}</td>
+                <td className="border p-1 text-sm">{invoice.nama_outlet}</td>
+                <td className="border p-1 text-sm">{formatDate(invoice.tanggal_transaksi)}</td>
+                <td className="border p-1 text-sm">{formatDate(invoice.jatuh_tempo)}</td>
+                <td className="border p-1 text-sm">{formatHari(invoice.hari_pergantian)}</td>
+                <td className="border p-1 text-sm">{formatDate(invoice.jatuh_tempo_pergantian)}</td>
+                <td className="border p-1 text-sm">{getReminderStatus(invoice)}</td>
+                <td className="border p-1 text-sm">
+                  <div className="flex space-x-1">
                     <span
-                      className="text-yellow-600 hover:text-yellow-800 cursor-pointer transition-colors duration-200"
+                      className="text-yellow-600 hover:text-yellow-800 cursor-pointer transition-colors duration-200 text-xs"
                       onClick={() => handleEdit(invoice)}
                     >
                       Edit
                     </span>
                     <span
-                      className="text-red-600 hover:text-red-800 cursor-pointer transition-colors duration-200"
+                      className="text-red-600 hover:text-red-800 cursor-pointer transition-colors duration-200 text-xs"
                       onClick={() => handleDelete(invoice.id)}
                     >
                       Hapus

@@ -88,6 +88,13 @@ const Employees = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Create new employee document
+      await addDoc(collection(db, 'karyawan'), {
+        nama_karyawan: formData.nama_karyawan,
+        jabatan: formData.jabatan,
+        no_telp: formData.no_telp,
+      });
+
       await addDoc(collection(db, 'faktur'), {
         no_invoice: formData.no_invoice,
         kode_outlet: formData.kode_outlet,
@@ -262,34 +269,34 @@ const Employees = () => {
       </div>
 
       {/* Daftar Karyawan */}
-      <div className="mb-8">
-        <h3 className="text-lg font-bold mb-4">Daftar Karyawan</h3>
+      <div className="mb-4">
+        <h3 className="text-base font-bold mb-2">Daftar Karyawan</h3>
         {employees.map((employee) => {
           const employeeInvoices = invoices.filter(
             (invoice) => invoice.nama_karyawan === employee.nama_karyawan,
           );
           return (
-            <div key={employee.id} className="mb-6 border rounded-lg p-4">
-              <h4 className="text-xl font-semibold">{employee.nama_karyawan}</h4>
-              <p className="text-gray-600">{employee.jabatan}</p>
-              <p className="text-gray-600">No Telepon: {employee.no_telp || '-'}</p>
-              <p className="text-sm text-gray-500">
+            <div key={employee.id} className="mb-3 border rounded-lg p-2">
+              <h4 className="text-lg font-semibold">{employee.nama_karyawan}</h4>
+              <p className="text-gray-600 text-sm">{employee.jabatan}</p>
+              <p className="text-gray-600 text-sm">No Telepon: {employee.no_telp || '-'}</p>
+              <p className="text-xs text-gray-500">
                 Jumlah Faktur Ditangani: {employeeInvoices.length}
               </p>
-              <div className="mt-4">
-                <h5 className="text-lg font-medium mb-2">Faktur Ditangani</h5>
-                <table className="w-full border-collapse">
+              <div className="mt-2">
+                <h5 className="text-base font-medium mb-1">Faktur Ditangani</h5>
+                <table className="w-full border-collapse mx-auto">
                   <thead>
                     <tr className="bg-gray-200">
-                      <th className="border p-2">No Faktur</th>
-                      <th className="border p-2">Nama Outlet</th>
-                      <th className="border p-2">Kode Outlet</th>
-                      <th className="border p-2">Tanggal Transaksi</th>
-                      <th className="border p-2">Jatuh Tempo</th>
-                      <th className="border p-2">Hari Penggantian</th>
-                      <th className="border p-2">Jatuh Tempo Penggantian</th>
-                      <th className="border p-2">Pengingat</th>
-                      <th className="border p-2">Aksi</th>
+                      <th className="border p-1 text-sm">No Faktur</th>
+                      <th className="border p-1 text-sm">Nama Outlet</th>
+                      <th className="border p-1 text-sm">Kode Outlet</th>
+                      <th className="border p-1 text-sm">Tanggal Transaksi</th>
+                      <th className="border p-1 text-sm">Jatuh Tempo</th>
+                      <th className="border p-1 text-sm">Hari Penggantian</th>
+                      <th className="border p-1 text-sm">Jatuh Tempo Penggantian</th>
+                      <th className="border p-1 text-sm">Pengingat</th>
+                      <th className="border p-1 text-sm">Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -300,21 +307,21 @@ const Employees = () => {
                       const waLink = `https://wa.me/${employee.no_telp.replace(/^0/, '62')}?text=${encodeURIComponent(pesanWA)}`;
                       return (
                         <tr key={invoice.id}>
-                          <td className="border p-2">{invoice.no_invoice}</td>
-                          <td className="border p-2">{invoice.nama_outlet}</td>
-                          <td className="border p-2">{invoice.kode_outlet}</td>
-                          <td className="border p-2">{formatDate(invoice.tanggal_transaksi)}</td>
-                          <td className="border p-2">{formatDate(invoice.jatuh_tempo)}</td>
-                          <td className="border p-2">{formatHari(invoice.hari_pergantian)}</td>
-                          <td className="border p-2">{tanggalTempo}</td>
-                          <td className="border p-2">{reminder}</td>
-                          <td className="border p-2 text-center">
+                          <td className="border p-1 text-sm">{invoice.no_invoice}</td>
+                          <td className="border p-1 text-sm">{invoice.nama_outlet}</td>
+                          <td className="border p-1 text-sm">{invoice.kode_outlet}</td>
+                          <td className="border p-1 text-sm">{formatDate(invoice.tanggal_transaksi)}</td>
+                          <td className="border p-1 text-sm">{formatDate(invoice.jatuh_tempo)}</td>
+                          <td className="border p-1 text-sm">{formatHari(invoice.hari_pergantian)}</td>
+                          <td className="border p-1 text-sm">{tanggalTempo}</td>
+                          <td className="border p-1 text-sm">{reminder}</td>
+                          <td className="border p-1 text-center">
                             <a
                               href={waLink}
                               target="_blank"
                               rel="noopener noreferrer"
                               title="Kirim WhatsApp"
-                              className="text-green-600 hover:text-green-800 text-xl"
+                              className="text-green-600 hover:text-green-800 text-lg"
                             >
                               🟢
                             </a>
