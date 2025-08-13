@@ -83,6 +83,12 @@ const Fakturs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Create new employee document
+      await addDoc(collection(db, 'karyawan'), {
+        nama_karyawan: formData.nama_karyawan,
+        jabatan: formData.jabatan,
+        no_telp: formData.no_telp,
+      });
       await addDoc(collection(db, 'faktur'), {
         no_invoice: formData.no_invoice,
         kode_outlet: formData.kode_outlet,
@@ -97,6 +103,9 @@ const Fakturs = () => {
       });
 
       setFormData({
+        nama_karyawan: '',
+        jabatan: '',
+        no_telp: '',
         no_invoice: '',
         kode_outlet: '',
         nama_outlet: '',
@@ -104,9 +113,6 @@ const Fakturs = () => {
         jatuh_tempo: '',
         hari_pergantian: '',
         jatuh_tempo_pergantian: '',
-        nama_karyawan: '',
-        jabatan: '',
-        no_telp: '',
       });
       setDialogContent({
         title: 'Sukses',
