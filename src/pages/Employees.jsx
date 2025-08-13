@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
-import { collection, addDoc, Timestamp, onSnapshot } from 'firebase/firestore';
+import { addDoc, collection, Timestamp, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Header } from '../components';
 
@@ -88,13 +88,6 @@ const Employees = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Create new employee document
-      await addDoc(collection(db, 'karyawan'), {
-        nama_karyawan: formData.nama_karyawan,
-        jabatan: formData.jabatan,
-        no_telp: formData.no_telp,
-      });
-
       await addDoc(collection(db, 'faktur'), {
         no_invoice: formData.no_invoice,
         kode_outlet: formData.kode_outlet,
@@ -108,6 +101,22 @@ const Employees = () => {
         jatuh_tempo_pergantian: Timestamp.fromDate(new Date(formData.jatuh_tempo_pergantian)),
       });
 
+      const q = query(
+        collection(db, 'karyawan'),
+        where('nama_karyawan', '==', formData.nama_karyawan)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        await addDoc(collection(db, 'karyawan'), {
+          nama_karyawan: formData.nama_karyawan,
+          jabatan: formData.jabatan,
+          no_telp: formData.no_telp,
+          created_at: Timestamp.now(),
+        });
+      }
+
+      // 4️⃣ Reset form
       setFormData({
         nama_karyawan: '',
         jabatan: '',
@@ -120,6 +129,8 @@ const Employees = () => {
         hari_pergantian: '',
         jatuh_tempo_pergantian: '',
       });
+
+      // 5️⃣ Dialog sukses
       setDialogContent({
         title: 'Sukses',
         content: 'Karyawan dan faktur berhasil ditambahkan',
