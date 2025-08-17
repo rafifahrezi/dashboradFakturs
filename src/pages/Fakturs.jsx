@@ -297,7 +297,7 @@ const Fakturs = () => {
 
           <div className="md:col-span-3">
             <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full">
-              Tambah Faktur
+              Simpan & Tambah Faktur
             </button>
           </div>
         </form>

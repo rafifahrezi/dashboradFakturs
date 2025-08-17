@@ -274,7 +274,7 @@ const Employees = () => {
             type="submit"
             className="bg-blue-500 text-white p-2 rounded md:col-span-3"
           >
-            Tambah Karyawan dan Faktur
+            Simpan & Tambah Karyawan dan Faktur
           </button>
         </form>
       </div>
