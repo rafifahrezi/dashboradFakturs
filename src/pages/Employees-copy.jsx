@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { DialogComponent } from '@syncfusion/ej2-react-popups';
-import { collection, addDoc, Timestamp, onSnapshot } from 'firebase/firestore';
+import { addDoc, collection, Timestamp, query, where, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Header } from '../components';
 
@@ -14,12 +14,13 @@ const Employees = () => {
     no_invoice: '',
     kode_outlet: '',
     nama_outlet: '',
+    no_telp_outlet: '',
     tanggal_transaksi: '',
     jatuh_tempo: '',
-    hari_pergantian: '',
+    jatuh_tempo_pembayaran: '',
     jatuh_tempo_pergantian: '',
   });
-  const [dialogVisible, setDialogVisible] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false); // Fixed destructuring
   const [dialogContent, setDialogContent] = useState({ title: '', content: '', isConfirm: false, onConfirm: null });
   const dialogRef = useRef(null);
 
@@ -88,14 +89,6 @@ const Employees = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Create new employee document
-      await addDoc(collection(db, 'karyawan'), {
-        nama_karyawan: formData.nama_karyawan,
-        jabatan: formData.jabatan,
-        no_telp: formData.no_telp,
-      });
-
-      // Create new invoice document
       await addDoc(collection(db, 'faktur'), {
         no_invoice: formData.no_invoice,
         kode_outlet: formData.kode_outlet,
@@ -109,6 +102,22 @@ const Employees = () => {
         jatuh_tempo_pergantian: Timestamp.fromDate(new Date(formData.jatuh_tempo_pergantian)),
       });
 
+      const q = query(
+        collection(db, 'karyawan'),
+        where('nama_karyawan', '==', formData.nama_karyawan)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        await addDoc(collection(db, 'karyawan'), {
+          nama_karyawan: formData.nama_karyawan,
+          jabatan: formData.jabatan,
+          no_telp: formData.no_telp,
+          created_at: Timestamp.now(),
+        });
+      }
+
+      // 4️⃣ Reset form
       setFormData({
         nama_karyawan: '',
         jabatan: '',
@@ -121,6 +130,8 @@ const Employees = () => {
         hari_pergantian: '',
         jatuh_tempo_pergantian: '',
       });
+
+      // 5️⃣ Dialog sukses
       setDialogContent({
         title: 'Sukses',
         content: 'Karyawan dan faktur berhasil ditambahkan',
@@ -153,7 +164,7 @@ const Employees = () => {
         header={dialogContent.title}
         content={dialogContent.content}
         buttons={dialogButtons}
-        width="16rem md:18rem"
+        width="300px"
         isModal
         showCloseIcon
         close={() => setDialogVisible(false)}
@@ -264,40 +275,41 @@ const Employees = () => {
             type="submit"
             className="bg-blue-500 text-white p-2 rounded md:col-span-3"
           >
-            Tambah Karyawan dan Faktur
+            Simpan & Tambah Karyawan dan Faktur
           </button>
         </form>
       </div>
 
       {/* Daftar Karyawan */}
-      <div className="mb-8">
-        <h3 className="text-lg font-bold mb-4">Daftar Karyawan</h3>
+      <div className="mb-4">
+        <h3 className="text-base font-bold mb-2">Daftar Karyawan</h3>
         {employees.map((employee) => {
           const employeeInvoices = invoices.filter(
             (invoice) => invoice.nama_karyawan === employee.nama_karyawan,
           );
           return (
-            <div key={employee.id} className="mb-6 border rounded-lg p-4">
-              <h4 className="text-xl font-semibold">{employee.nama_karyawan}</h4>
-              <p className="text-gray-600">{employee.jabatan}</p>
-              <p className="text-gray-600">No Telepon: {employee.no_telp || '-'}</p>
-              <p className="text-sm text-gray-500">
+            <div key={employee.id} className="mb-3 border rounded-lg p-2">
+              <h4 className="text-lg font-semibold">{employee.nama_karyawan}</h4>
+              <p className="text-gray-600 text-sm">{employee.jabatan}</p>
+              <p className="text-gray-600 text-sm">No Telepon: {employee.no_telp || '-'}</p>
+              <p className="text-xs text-gray-500">
                 Jumlah Faktur Ditangani: {employeeInvoices.length}
               </p>
-              <div className="mt-4">
-                <h5 className="text-lg font-medium mb-2">Faktur Ditangani</h5>
-                <table className="w-full border-collapse">
+              <div className="mt-2">
+                <h5 className="text-base font-medium mb-1">Faktur Ditangani</h5>
+                <table className="w-full border-collapse mx-auto">
                   <thead>
                     <tr className="bg-gray-200">
-                      <th className="border p-2">No Faktur</th>
-                      <th className="border p-2">Nama Outlet</th>
-                      <th className="border p-2">Kode Outlet</th>
-                      <th className="border p-2">Tanggal Transaksi</th>
-                      <th className="border p-2">Jatuh Tempo</th>
-                      <th className="border p-2">Hari Penggantian</th>
-                      <th className="border p-2">Jatuh Tempo Penggantian</th>
-                      <th className="border p-2">Pengingat</th>
-                      <th className="border p-2">Aksi</th>
+                      <th className="border p-1 text-sm">No Faktur</th>
+                      <th className="border p-1 text-sm">Nama Outlet</th>
+                      <th className="border p-1 text-sm">Kode Outlet</th>
+                      <th className="border p-1 text-sm">Tanggal Transaksi</th>
+                      <th className="border p-1 text-sm">Jatuh Tempo</th>
+                      <th className="border p-1 text-sm">Jatuh Tempo Penggantian</th>
+                      <th className="border p-1 text-sm">Jatuh Tempo Pembayaran</th>
+                      <th className="border p-1 text-sm">Pengingat</th>
+                      <th className="border p-1 text-sm">Aksi Karyawan</th>
+                      <th className="border p-1 text-sm">Aksi Toko</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -306,28 +318,44 @@ const Employees = () => {
                       const tanggalTempo = formatDate(invoice.jatuh_tempo_pergantian);
                       const pesanWA = `Halo ${employee.nama_karyawan}, Anda memiliki faktur *${invoice.no_invoice}* dari outlet *${invoice.nama_outlet}*.\n\n📅 Jatuh tempo pergantian: *${tanggalTempo}*.\n🔔 ${reminder}\n\nMohon segera lakukan pertukaran faktur.`;
                       const waLink = `https://wa.me/${employee.no_telp.replace(/^0/, '62')}?text=${encodeURIComponent(pesanWA)}`;
-
+                      // Pesan WhatsApp untuk Toko
+                      const pesanWAToko = `Halo, kami ingin mengingatkan bahwa faktur *${invoice.no_invoice}* dengan tanggal transaksi *${invoice.tanggal_transaksi}* memiliki jatuh tempo pembayaran pada *${tanggalTempo}*.\n\n📅 Tanggal Pembayaran: *${invoice.hari_pergantian}*\n\nMohon segera lakukan pembayaran. Terima kasih.`;
+                      const waLinkToko = invoice.no_telp_outlet
+                        ? `https://wa.me/${invoice.no_telp_outlet.replace(/^0/, '62')}?text=${encodeURIComponent(pesanWAToko)}`
+                        : '#';
                       return (
                         <tr key={invoice.id}>
-                          <td className="border p-2">{invoice.no_invoice}</td>
-                          <td className="border p-2">{invoice.nama_outlet}</td>
-                          <td className="border p-2">{invoice.kode_outlet}</td>
-                          <td className="border p-2">{formatDate(invoice.tanggal_transaksi)}</td>
-                          <td className="border p-2">{formatDate(invoice.jatuh_tempo)}</td>
-                          <td className="border p-2">{formatDate(invoice.hari_pergantian)}</td>
-                          <td className="border p-2">{tanggalTempo}</td>
-                          <td className="border p-2">{reminder}</td>
-                          <td className="border p-2 text-center">
+                          <td className="border p-1 text-sm">{invoice.no_invoice}</td>
+                          <td className="border p-1 text-sm">{invoice.nama_outlet}</td>
+                          <td className="border p-1 text-sm">{invoice.kode_outlet}</td>
+                          <td className="border p-1 text-sm">{formatDate(invoice.tanggal_transaksi)}</td>
+                          <td className="border p-1 text-sm">{formatDate(invoice.jatuh_tempo)}</td>
+                          <td className="border p-1 text-sm">{tanggalTempo}</td>
+                          <td className="border p-1 text-sm">{formatDate(invoice.hari_pergantian)}</td>
+                          <td className="border p-1 text-sm">{reminder}</td>
+                          <td className="border p-1 text-center">
                             <a
                               href={waLink}
                               target="_blank"
                               rel="noopener noreferrer"
                               title="Kirim WhatsApp"
-                              className="text-green-600 hover:text-green-800 text-xl"
+                              className="text-green-600 hover:text-green-800 text-lg"
                             >
                               🟢
                             </a>
                           </td>
+                          <td className="border p-1 text-center">
+                            <a
+                              href={waLinkToko}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title="Kirim WhatsApp"
+                              className="text-green-600 hover:text-green-800 text-lg"
+                            >
+                              🔵
+                            </a>
+                          </td>
+
                         </tr>
                       );
                     })}

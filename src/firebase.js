@@ -1,16 +1,15 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyCOznGhV3uvyqOAViNIVujQJvZxhZliT2Y',
-  authDomain: 'tutorial-ca7d7.firebaseapp.com',
-  projectId: 'tutorial-ca7d7',
-  storageBucket: 'tutorial-ca7d7.firebasestorage.app',
-  messagingSenderId: '856649823221',
-  appId: '1:856649823221:web:aedeb9350f2d5de227e6bc',
-  measurementId: 'G-HN2K4J7VWS',
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  measurementId: "G-69QQ8RV8QG",
 };
 
 // Initialize Firebase
