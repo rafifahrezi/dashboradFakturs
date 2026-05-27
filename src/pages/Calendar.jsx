@@ -1,17 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  ScheduleComponent,
-  ViewsDirective,
-  ViewDirective,
-  Day,
-  Week,
-  WorkWeek,
-  Month,
-  Agenda,
-  Inject,
-  Resize,
-  DragAndDrop,
-} from '@syncfusion/ej2-react-schedule';
+import { ScheduleComponent, ViewsDirective, ViewDirective, Day, Week, WorkWeek, Month, Agenda, Inject, Resize, DragAndDrop } from '@syncfusion/ej2-react-schedule';
 import { collection, getDocs, Timestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import Header from '../components/Header';
@@ -23,16 +11,30 @@ const Scheduler = () => {
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'faktur'));
-        const eventData = querySnapshot.docs.map((doc) => {
+        const [fakturSnapshot, tokoSnapshot] = await Promise.all([
+          getDocs(collection(db, 'faktur')),
+          getDocs(collection(db, 'toko')),
+        ]);
+
+        const tokoMap = {};
+        tokoSnapshot.forEach((doc) => {
+          tokoMap[doc.id] = doc.data();
+        });
+
+        const eventData = fakturSnapshot.docs.map((doc) => {
           const data = doc.data();
-          const startTime = data.jatuh_tempo_pergantian instanceof Timestamp
-            ? data.jatuh_tempo_pergantian.toDate()
-            : new Date();
+
+          const tokoId = data.id_toko || data.toko_id;
+          const tokoData = tokoMap[tokoId] || {};
+
+          const startTime =
+            data.jatuh_tempo_pergantian instanceof Timestamp
+              ? data.jatuh_tempo_pergantian.toDate()
+              : new Date();
 
           return {
             Id: doc.id,
-            Subject: data.nama_outlet || 'Faktur Tanpa Nomor',
+            Subject: tokoData.nama_outlet || 'Faktur Tanpa Nama Outlet',
             StartTime: startTime,
             EndTime: startTime,
             IsAllDay: true,
@@ -42,7 +44,7 @@ const Scheduler = () => {
 
         setEvents(eventData);
       } catch (error) {
-        // console.error('Error fetching invoices:', error);
+        console.error('Error fetching invoices:', error);
       }
     };
 
@@ -56,6 +58,7 @@ const Scheduler = () => {
         height="650px"
         ref={scheduleRef}
         selectedDate={new Date()}
+        currentView="Month"
         eventSettings={{
           dataSource: events,
           allowEditing: false,

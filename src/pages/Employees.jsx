@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { DialogComponent } from '@syncfusion/ej2-react-popups';
+// import { DialogComponent } from '@syncfusion/ej2-react-popups';
 import {
   addDoc,
   collection,
@@ -14,21 +14,19 @@ const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [outlets, setOutlets] = useState([]);
-  const [filteredOutlets, setFilteredOutlets] = useState([]);
+  // const [filteredOutlets, setFilteredOutlets] = useState([]);
   const [formData, setFormData] = useState({
     nama_karyawan: '',
     jabatan: '',
     no_telp: '',
     toko_ids: [],
   });
-  const [searchToko, setSearchToko] = useState('');
   const [errors, setErrors] = useState({});
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState('success');
   const [showToast, setShowToast] = useState(false);
   const toastRef = useRef(null);
 
-  // Fetch outlets from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'toko'), (snapshot) => {
       const data = snapshot.docs.map((document) => ({
@@ -36,12 +34,11 @@ const Employees = () => {
         ...document.data(),
       }));
       setOutlets(data);
-      setFilteredOutlets(data);
+      // setFilteredOutlets(data);
     });
     return () => unsubscribe();
   }, []);
 
-  // Fetch invoices from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'faktur'), (snapshot) =>
       setInvoices(
@@ -54,7 +51,6 @@ const Employees = () => {
     return () => unsubscribe();
   }, []);
 
-  // Fetch employees from Firestore
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, 'karyawan'), (snapshot) => {
       setEmployees(
@@ -67,7 +63,6 @@ const Employees = () => {
     return () => unsubscribe();
   }, []);
 
-  // Show Toast
   const displayToast = (message, type = 'success') => {
     setToastMessage(message);
     setToastType(type);
@@ -75,18 +70,15 @@ const Employees = () => {
     setTimeout(() => setShowToast(false), 3000);
   };
 
-  // Format date for display
-  const formatDate = (date) => {
-    if (!date || !(date instanceof Timestamp || date.toDate)) return '-';
-    const dateObj = date.toDate ? date.toDate() : date;
-    return dateObj.toLocaleDateString('id-ID', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-    });
+  const normalizeText = (value = '') => value.trim().replace(/\s+/g, ' ');
+
+  const formatPhone = (phone = '') => {
+    const cleaned = phone.replace(/\s/g, '');
+    if (cleaned.startsWith('08')) return `62${cleaned.slice(1)}`;
+    if (cleaned.startsWith('+62')) return cleaned.replace('+', '');
+    return cleaned;
   };
 
-  // Format date for time (day name)
   const formatHari = (timestamp) => {
     if (
       !timestamp ||
@@ -99,7 +91,27 @@ const Employees = () => {
     return days[date.getDay()];
   };
 
-  // Check reminder status (days before due date)
+  const formatDate = (date) => {
+    if (!date || !(date instanceof Timestamp)) return '-';
+    return date.toDate().toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const getOutletById = (outletId) => outlets.find((outlet) => outlet.id === outletId);
+
+  // Get store name by ID with fallback
+  const getStoreName = (storeId) => {
+    const store = getOutletById(storeId);
+    return store ? store.nama_outlet : 'Toko tidak ditemukan';
+  };
+  const getStoreCode = (storeId) => {
+    const store = getOutletById(storeId);
+    return store ? store.kode_outlet : '-';
+  };
+
   const getReminderStatus = (invoice) => {
     const jatuhTempo = invoice?.jatuh_tempo_pergantian;
     if (
@@ -119,55 +131,55 @@ const Employees = () => {
     return `⏰ Pengingat: ${diffDays} hari lagi`;
   };
 
-  // Get outlet details by ID
-  const getOutletById = (outletId) => outlets.find((outlet) => outlet.id === outletId);
-
-  // Get store name by ID with fallback
-  const getStoreName = (storeId) => {
-    const store = getOutletById(storeId);
-    return store ? store.nama_outlet : 'Toko tidak ditemukan';
-  };
-
-  // Get store code by ID with fallback
-  const getStoreCode = (storeId) => {
-    const store = getOutletById(storeId);
-    return store ? store.kode_outlet : '-';
-  };
-
-  // Validate form
   const validateForm = () => {
     const newErrors = {};
+    const nama = normalizeText(formData.nama_karyawan);
+    const jabatan = normalizeText(formData.jabatan);
+    const noTelp = normalizeText(formData.no_telp).replace(/\s/g, '');
 
-    if (!formData.nama_karyawan?.trim()) {
-      newErrors.nama_karyawan = 'Nama karyawan tidak boleh kosong';
+    if (!nama) {
+      newErrors.nama_karyawan = 'Nama karyawan wajib diisi';
     }
-
-    if (!formData.jabatan?.trim()) {
-      newErrors.jabatan = 'Jabatan tidak boleh kosong';
+    if (!jabatan) {
+      newErrors.jabatan = 'Jabatan wajib diisi';
     }
-
-    if (!formData.no_telp?.trim()) {
-      newErrors.no_telp = 'Nomor telepon tidak boleh kosong';
-    } else if (!/^(\+62|0)[0-9]{9,12}$/.test(formData.no_telp.replace(/\s/g, ''))) {
+    if (!noTelp) {
+      newErrors.no_telp = 'Nomor telepon wajib diisi';
+    } else if (!/^(\+62|62|0)[0-9]{9,12}$/.test(noTelp)) {
       newErrors.no_telp = 'Format nomor telepon tidak valid';
     }
 
-    if (formData.toko_ids.length === 0) {
-      newErrors.toko_ids = 'Pilih minimal satu toko';
-    }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return {
+      isValid: Object.keys(newErrors).length === 0,
+      cleanData: {
+        nama_karyawan: nama,
+        jabatan,
+        no_telp: noTelp,
+      },
+    };
   };
 
-  // Handle input change
+  const checkDuplicateEmployee = (cleanData) => {
+    const nama = cleanData.nama_karyawan.toLowerCase();
+    const telp = cleanData.no_telp.replace(/\D/g, '');
+
+    return employees.some((emp) => {
+      const empNama = normalizeText(emp?.nama_karyawan || '').toLowerCase();
+      const empTelp = formatPhone(emp?.no_telp || '').replace(/\D/g, '');
+
+      return empNama === nama || empTelp === telp;
+    });
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    // Clear error for this field
+
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -176,64 +188,39 @@ const Employees = () => {
     }
   };
 
-  // Handle search toko
-  const handleSearchToko = (e) => {
-    const searchValue = e.target.value.toLowerCase();
-    setSearchToko(searchValue);
-
-    const filtered = outlets.filter(
-      (outlet) =>
-        outlet.nama_outlet.toLowerCase().includes(searchValue) ||
-        outlet.kode_outlet.toLowerCase().includes(searchValue)
-    );
-    setFilteredOutlets(filtered);
-  };
-
-  // Handle multi-select for toko_ids
-  const handleTokoChange = (e) => {
-    const selectedOptions = Array.from(
-      e.target.selectedOptions,
-      (option) => option.value
-    );
-    setFormData((prev) => ({
-      ...prev,
-      toko_ids: selectedOptions,
-    }));
-    if (errors.toko_ids) {
-      setErrors((prev) => ({
-        ...prev,
-        toko_ids: '',
-      }));
-    }
-  };
-
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
-      displayToast('Silakan perbaiki error pada form', 'error');
+    const { isValid, cleanData } = validateForm();
+    if (!isValid) {
+      displayToast('Silakan periksa kembali form yang diisi', 'error');
       return;
     }
 
     try {
+      const isDuplicate = checkDuplicateEmployee(cleanData);
+
+      if (isDuplicate) {
+        displayToast(
+          'Data karyawan sudah ada di database. Nama atau nomor telepon tidak boleh sama.',
+          'error'
+        );
+        return;
+      }
+
       await addDoc(collection(db, 'karyawan'), {
-        nama_karyawan: formData.nama_karyawan.trim(),
-        jabatan: formData.jabatan.trim(),
-        no_telp: formData.no_telp.trim(),
-        toko_ids: formData.toko_ids,
+        nama_karyawan: cleanData.nama_karyawan,
+        jabatan: cleanData.jabatan,
+        no_telp: cleanData.no_telp,
         created_at: Timestamp.now(),
         updated_at: Timestamp.now(),
       });
 
-      // Reset form
       setFormData({
         nama_karyawan: '',
         jabatan: '',
         no_telp: '',
-        toko_ids: [],
       });
-      setSearchToko('');
       setErrors({});
 
       displayToast('Karyawan berhasil ditambahkan!', 'success');
@@ -329,57 +316,6 @@ const Employees = () => {
             ) : (
               <p id="hint-no_telp" className="text-xs text-gray-500 mt-1">
                 {formData.no_telp || 'Masukkan nomor telepon'}
-              </p>
-            )}
-          </div>
-
-          {/* Pilih Toko dengan Search */}
-          <div>
-            <h4 htmlFor="toko_search" className="block text-sm font-medium text-gray-700 mb-1">
-              Pilih Toko <span className="text-red-500">*</span>
-            </h4>
-            <div className="mb-2">
-              <input
-                id="toko_search"
-                type="text"
-                placeholder="Cari toko..."
-                className="p-2 border border-gray-300 rounded w-full mb-2"
-                value={searchToko}
-                onChange={handleSearchToko}
-              />
-              <select
-                id="toko_ids"
-                name="toko_ids"
-                className={`p-2 border rounded w-full ${errors.toko_ids ? 'border-red-500' : 'border-gray-300'}`}
-                multiple
-                size="4"
-                value={formData.toko_ids}
-                onChange={handleTokoChange}
-                aria-describedby={errors.toko_ids ? 'error-toko_ids' : 'hint-toko_ids'}
-              >
-                {filteredOutlets.length === 0 ? (
-                  <option disabled>Tidak ada toko yang cocok</option>
-                ) : (
-                  filteredOutlets.map((outlet) => (
-                    <option key={outlet.id} value={outlet.id}>
-                      {outlet.nama_outlet} - {outlet.kode_outlet}
-                    </option>
-                  ))
-                )}
-              </select>
-            </div>
-            {errors.toko_ids ? (
-              <p id="error-toko_ids" className="text-xs text-red-500 mt-1" role="alert">{errors.toko_ids}</p>
-            ) : (
-              <p id="hint-toko_ids" className="text-xs text-gray-500 mt-1">
-                {formData.toko_ids.length > 0
-                  ? `${formData.toko_ids.length} toko dipilih: ${formData.toko_ids
-                    .map((id) => {
-                      const outlet = getOutletById(id);
-                      return outlet ? outlet.nama_outlet : '';
-                    })
-                    .join(', ')}`
-                  : 'Pilih satu atau lebih toko (Tekan Ctrl/Cmd untuk multiple)'}
               </p>
             )}
           </div>
